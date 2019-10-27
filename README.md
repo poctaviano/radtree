@@ -2,9 +2,9 @@
 
 <table width="100%">
   <tr>
-    <td><img src="./assets/iris.png?raw=true" width="100%"></td>
+    <td width="33%"><img src="./assets/iris.png?raw=true" width="100%"></td>
     <td><img src="./assets/bcancer.png?raw=true" width="100%"></td>
-    <td><img src="./assets/titanic3.png?raw=true" width="100%"></td>
+    <td width="33%"><img src="./assets/titanic3.png?raw=true" width="100%"></td>
   </tr>
 </table>
 
