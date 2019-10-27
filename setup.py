@@ -1,7 +1,7 @@
 from setuptools import setup, find_namespace_packages
 
 setup(
-    name='radial-tree',
+    name='radtree',
     description='Radial Plot for sklearn Decision Trees',
     version='0.0.1',
     url='git@github.com:poctaviano/radtree.git',
