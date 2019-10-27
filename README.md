@@ -10,14 +10,14 @@
 
 ## What is it?
 
-`radtree` is a tool to make radial plots of Decision Trees Classifiers.   
+`radtree` is a tool for visualizing Decision Trees Classifiers as a radial plot.   
 It uses networkx to create the tree structure and matplotlib to plot.
 
 I would like to thanks <a href='https://stackoverflow.com/users/1429402/fnord'>Fnord</a> for tem <a href='https://stackoverflow.com/questions/34803197/fast-b-spline-algorithm-with-numpy-scipy'>b-spline algorithm</a>.
 
 ## Installation
 
-- Install radtree from Pypi :
+- Install `radtree` with pip :
 
 ```
 pip install git+https://github.com/poctaviano/radtree
