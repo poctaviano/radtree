@@ -91,7 +91,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
         plt.style.use(['classic'])
         plt.rcParams['figure.figsize'] = (15, 15)
         plt.rcParams['font.family'] = 'sans-serif'
-        plt.rcParams['font.size'] = 18
+        plt.rcParams['font.size'] = 14
     if smooth_d is not None :
         smooth_edges=True
     if bbox == 'dark' :
@@ -369,7 +369,7 @@ def make_radial_plot(G,X,Y, clf, df_depths, node_paths, leaf_nodes,
     nx.draw(G, **options, node_shape='.')
     if draw_labels :
         labels = nx.get_edge_attributes(G,'label')
-        labs = nx.draw_networkx_edge_labels(G,pos,edge_labels=labels, font_size=7,font_color='w',bbox=bbox)
+        labs = nx.draw_networkx_edge_labels(G,pos,edge_labels=labels, font_size=8,font_color='w',bbox=bbox)
     else :
         labels = None
         labs = None
