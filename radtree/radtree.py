@@ -91,7 +91,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
         plt.style.use(['classic'])
         plt.rcParams['figure.figsize'] = (15, 15)
         plt.rcParams['font.family'] = 'sans-serif'
-        plt.rcParams['font.size'] = 14
+        plt.rcParams['font.size'] = 16
     if smooth_d is not None :
         smooth_edges=True
     if bbox == 'dark' :
