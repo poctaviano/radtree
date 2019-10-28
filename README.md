@@ -10,7 +10,8 @@
 
 ## What is it?
 
-`radtree` is a tool for visualizing Decision Trees Classifiers as a radial plot.   
+`radtree` is a tool for visualizing Decision Trees Classifiers as a radial plot.
+
 It uses networkx to create the tree structure and matplotlib to plot.
 
 I would like to thanks <a href='https://stackoverflow.com/users/1429402/fnord'>Fnord</a> for tem <a href='https://stackoverflow.com/questions/34803197/fast-b-spline-algorithm-with-numpy-scipy'>b-spline algorithm</a>.
@@ -18,8 +19,10 @@ I would like to thanks <a href='https://stackoverflow.com/users/1429402/fnord'>F
 ## Beta Version
 
 This package is in beta version. Some functionalities need to be improved.
-Since it calculates all the possible paths between all the points in the data provided, the processing time will increase drastically as the number of samples increase.
-By default, it' capped at 100 random samples maximum. To use all the data given, please use num_samples=None.
+
+Since it calculates all the possible paths between the points in the dataset, the processing time will increase drastically as the number of samples increase.
+
+By default, it's capped at 100 random samples maximum. To use all the data given, please use `num_samples=None`.
 
 ## Installation
 
