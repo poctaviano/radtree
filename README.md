@@ -28,6 +28,7 @@ pip install git+https://github.com/poctaviano/radtree
 Please check the [/notebooks folder](./notebooks/) to view some examples.
 
 ```python
+%matplotlib inline
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import datasets
