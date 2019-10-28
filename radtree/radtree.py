@@ -11,7 +11,7 @@ from matplotlib.collections import LineCollection
 from matplotlib.colors import LinearSegmentedColormap
 
 def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None,
-                num_samples=100, levels=None,tiny_names=None, draw_labels=None,
+                num_samples=100, levels=None,tiny_names=None, draw_labels=None, save_img=True,
                 style='radplot', bbox='dark', cmap='pairs', tree_node_size=50,
                 leaf_node_size=50, node_size=50, l_width=1, l_alpha=1, png_transparent=True,
                 spring=False, smooth_edges=False,smooth_d=None, smooth_res=50, random_seed=None) :
@@ -44,6 +44,9 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
 
     draw_labels : bool, default True
         Draw edges labels
+
+    save_img : bool, default True
+        Save PNG file in /plots/ folder.
 
     style : str, default radplot
         Set matplotlib style options.
@@ -162,7 +165,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
     df_depths, node_paths = get_depth(G, clf, node_paths)
 
     make_radial_plot(G, x, y, clf, df_depths, node_paths, leaf_nodes,
-                     draw_labels=draw_labels, bbox=bbox, node_size=node_size,
+                     draw_labels=draw_labels, bbox=bbox, node_size=node_size, save_img=save_img,
                      l_width=l_width, l_alpha=l_alpha,
                      spring=spring, smooth_edges=smooth_edges,
                      smooth_d=smooth_d, smooth_res=smooth_res, png_transparent=png_transparent)
@@ -319,7 +322,7 @@ def get_depth(G, clf, node_paths) :
     return df_depths, node_paths
 
 def make_radial_plot(G,X,Y, clf, df_depths, node_paths, leaf_nodes,
-                     draw_labels=None, bbox=None, node_size=None,
+                     draw_labels=None, bbox=None, node_size=None, save_img=True,
                      l_width=1, l_alpha=1, smooth_res=50, smooth_d=3, spring=True,
                      smooth_edges=False, bg_color="#00000F", img_res=300, png_transparent=True) :
     t = clf.tree_
@@ -397,8 +400,9 @@ def make_radial_plot(G,X,Y, clf, df_depths, node_paths, leaf_nodes,
             str_feat = f'range({x.columns[0]}, {x.columns[-1]})'
     suptitle = plt.figtext(0.5, title_pos[1]*.88 , str_feat, color='w', horizontalalignment='center')
     file_name = './plots/nfeat{}_s{}_n{}_sp{}_sm{}_d{}_lw{}{}_dpi{}.png'.format(*file_name_parameters)
-    os.makedirs(os.path.dirname(file_name), exist_ok=True)
-    plt.savefig(file_name, dpi=img_res, transparent=png_transparent)
+    if save_img :
+        os.makedirs(os.path.dirname(file_name), exist_ok=True)
+        plt.savefig(file_name, dpi=img_res, transparent=png_transparent)
     plt.rcParams['figure.dpi'] = 100
 
 def smoth_paths(G, fig, ax, pos, leaf_nodes, l_width=1, l_alpha=1, res=50, d=3) :
@@ -490,7 +494,7 @@ def quick_fitted_tree(X,Y, model_type=['GridSearch', 'FeatureSelection'], test_s
     return model, sel_cols, splitted_data
 
 
-def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5) :
+def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=True) :
     from sklearn.decomposition import PCA
     if validation_data is None :
         validation_data = (X,Y)
@@ -508,10 +512,13 @@ def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5) :
     cmap = LinearSegmentedColormap.from_list("recy", ["magenta","cyan"])
     for a in range(1,10) :
         plt.scatter(embedings[:,0],embedings[:,1], c=Y_valid.ravel(), cmap=cmap, s=5*a**size, alpha=1/(a**size), edgecolors='', )
-    plt.savefig('s' + str(int(size)) + '_pca.png')
+    file_name = './plots/s' + str(int(size)) + '_pca.png'
+    if save_img :
+        os.makedirs(os.path.dirname(file_name), exist_ok=True)
+        plt.savefig(file_name, dpi=300, transparent=True)
     plt.show()
 
-def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5) :
+def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=True) :
     from umap import UMAP
     if validation_data is None :
         validation_data = (X,Y)
@@ -530,10 +537,13 @@ def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5) :
     for a in range(1,10) :
     #     print(a)
         plt.scatter(embedings[:,0],embedings[:,1], c=Y_valid.ravel(), cmap=cmap, s=5*a**size, alpha=1/(a**size), edgecolors='', )
-    plt.savefig('s' + str(int(size)) + '_umap.png')
+    file_name = './plots/s' + str(int(size)) + '_umap.png'
+    if save_img :
+        os.makedirs(os.path.dirname(file_name), exist_ok=True)
+        plt.savefig(file_name, dpi=300, transparent=True)
     plt.show()
 
-def plot_tsne(X,Y, style='starplot', p_size=3.5) :
+def plot_tsne(X,Y, style='starplot', p_size=3.5, save_img=True) :
         from sklearn.manifold import TSNE
         if style=='starplot' :
             plt.style.use(['dark_background'])
@@ -548,5 +558,8 @@ def plot_tsne(X,Y, style='starplot', p_size=3.5) :
         for a in range(1,10) :
         #     print(a)
             plt.scatter(embedings[:,0],embedings[:,1], c=Y.ravel(), cmap=cmap, s=5*a**size, alpha=1/(a**size), edgecolors='', )
-        plt.savefig('s' + str(int(size)) + '_tsne.png')
+        file_name = './plots/s' + str(int(size)) + '_tsne.png'
+        if save_img :
+            os.makedirs(os.path.dirname(file_name), exist_ok=True)
+            plt.savefig(file_name, dpi=300, transparent=True)
         plt.show()
