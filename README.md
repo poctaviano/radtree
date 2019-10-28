@@ -15,6 +15,12 @@ It uses networkx to create the tree structure and matplotlib to plot.
 
 I would like to thanks <a href='https://stackoverflow.com/users/1429402/fnord'>Fnord</a> for tem <a href='https://stackoverflow.com/questions/34803197/fast-b-spline-algorithm-with-numpy-scipy'>b-spline algorithm</a>.
 
+## Beta Version
+
+This package is in beta version. Some functionalities need to be improved.
+Since it calculates all the possible paths between all the points in the data provided, the processing time will increase drastically as the number of samples increase.
+By default, it' capped at 100 random samples maximum. To use all the data given, please use num_samples=None.
+
 ## Installation
 
 - Install `radtree` with pip :
@@ -25,7 +31,7 @@ pip install git+https://github.com/poctaviano/radtree
 
 ## Examples
 
-Please check the [/notebooks folder](./notebooks/) to view some examples.
+Please check the [/notebooks](./notebooks/) folder to view some examples.
 
 ```python
 %matplotlib inline
