@@ -9,5 +9,6 @@ setup(
     author_email='pedrooctaviano@gmail.com',
     license='MIT',
     packages=['radtree'],
+    install_requires=['networkx>=2.3','tqdm', 'sklearn', 'matplotlib', 'numpy', 'pandas',],
     zip_safe=False
 )
