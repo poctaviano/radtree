@@ -1,5 +1,5 @@
 def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None,
-                num_samples=100, levels=None,tiny_names=None, draw_labels=None,
+                num_samples=100, levels=None,edges_labels=None, draw_labels=None,
                 style='radplot', bbox='dark', cmap='pairs', tree_node_size=50,
                 leaf_node_size=50, node_size=50, l_width=1, l_alpha=1,
                 fig_res=72, save_img=False, img_res=300, png_transparent=True,
@@ -28,7 +28,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
     levels : pd.DataFrame, optional
         DataFrame with one row (inxex=0) with a list of categorical levels for each column in the data.
 
-    tiny_names : list, optional
+    edges_labels : list, optional
         List of pretty labels to replace column names in the plot (default=None)
 
     draw_labels : bool, default True
@@ -447,7 +447,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
 
     G, node_paths, leaf_nodes = make_graph(x, y, clf, feature_cols, levels.copy(),
                                            tree_node_size, leaf_node_size, label_hex_colors=label_hex_colors,
-                                           feat_short=tiny_names)
+                                           feat_short=edges_labels)
 
     df_depths, node_paths = get_depth(G, clf, node_paths)
 
