@@ -56,6 +56,10 @@ radtree.plot_radial(dtree, X=X_test,Y=y_test,
 
 ```
 
+To automatically save the plot as a PNG file, you can use `save_img=True`.
+
+The file will be saved in `/plots/` folder.
+
 <table width="100%">
   <tr>
     <td><img src="./assets/iris2.png?raw=true" width="100%"></td>
