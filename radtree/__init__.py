@@ -1,3 +1,13 @@
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.pylab as pylab
+import matplotlib as mpl
+from matplotlib.collections import LineCollection
+from matplotlib.colors import LinearSegmentedColormap
+__all__ = []
+
 def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None,
                 num_samples=100, levels=None,edges_labels=None, draw_labels=None,
                 style='radplot', bbox='dark', cmap='pairs', tree_node_size=50,
@@ -79,17 +89,9 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
         Seed for the random number generator.
 
     """
-    import os
-    import pandas as pd
-    import numpy as np
     from sklearn import tree, model_selection, feature_selection
     import networkx as nx
     from tqdm import tqdm_notebook as tqdm
-    import matplotlib.pyplot as plt
-    import matplotlib.pylab as pylab
-    import matplotlib as mpl
-    from matplotlib.collections import LineCollection
-    from matplotlib.colors import LinearSegmentedColormap
 
     def make_graph(X, Y, clf, feature_cols, levels_0, tree_node_size=100, leaf_node_size=20, label_hex_colors=None, feat_short=None) :
         lhex = label_hex_colors
@@ -464,12 +466,14 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
 
 
 def quick_fitted_tree(X,Y, model_type=['GridSearch', 'FeatureSelection'], test_split=None, random_state=None) :
+    from sklearn import tree, model_selection, feature_selection
+
     splitted_data = None
     sel_cols = None
     x = X.copy()
     y = Y.copy()
     if isinstance(test_split, (float)) :
-        x, x_test, y, y_test = train_test_split(x, y, test_size=test_split, random_state=random_state)
+        x, x_test, y, y_test = model_selection.train_test_split(x, y, test_size=test_split, random_state=random_state)
     cv_split = model_selection.ShuffleSplit(n_splits = 10, test_size = .3, train_size = .6, random_state = random_state )
     dtree = tree.DecisionTreeClassifier(random_state = random_state)
     model = dtree
@@ -505,10 +509,6 @@ def quick_fitted_tree(X,Y, model_type=['GridSearch', 'FeatureSelection'], test_s
 
 def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72, random_state=None) :
     from sklearn.decomposition import PCA
-    import matplotlib.pyplot as plt
-    import numpy as np
-    from matplotlib.colors import LinearSegmentedColormap
-    import os
 
     if validation_data is None :
         validation_data = (X,Y)
@@ -535,10 +535,6 @@ def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=F
 
 def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72, random_state=None) :
     from umap import UMAP
-    import matplotlib.pyplot as plt
-    import numpy as np
-    from matplotlib.colors import LinearSegmentedColormap
-    import os
 
     if validation_data is None :
         validation_data = (X,Y)
@@ -565,10 +561,6 @@ def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=
 
 def plot_tsne(X,Y, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72, random_state=None) :
         from sklearn.manifold import TSNE
-        import matplotlib.pyplot as plt
-        import numpy as np
-        from matplotlib.colors import LinearSegmentedColormap
-        import os
 
         if style=='starplot' :
             plt.style.use(['dark_background'])
@@ -588,3 +580,5 @@ def plot_tsne(X,Y, style='starplot', p_size=3.5, save_img=False, img_res=300, fi
             os.makedirs(os.path.dirname(file_name), exist_ok=True)
             plt.savefig(file_name, dpi=img_res, transparent=True)
         plt.show()
+
+__all__ = [plot_radial, plot_pca, plot_tsne, plot_umap, quick_fitted_tree]
