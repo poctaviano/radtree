@@ -3,7 +3,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
                 style='radplot', bbox='dark', cmap='pairs', tree_node_size=50,
                 leaf_node_size=50, node_size=50, l_width=1, l_alpha=1,
                 fig_res=72, save_img=False, img_res=300, png_transparent=True,
-                spring=False, smooth_edges=False,smooth_d=None, smooth_res=50, random_seed=None) :
+                spring=False, smooth_edges=False,smooth_d=None, smooth_res=50, random_state=None) :
 
     """Draw radial plot.
     feature_cols
@@ -75,7 +75,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
     smooth_res : int, default 50
         Number of segments of the resulting spline.
 
-    random_seed : int, optional
+    random_state : int, optional
         Seed for the random number generator.
 
     """
@@ -197,10 +197,10 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
                 r_split = list(set(r_split) - set(l_to_split))
                 levels.loc[3,feat[i]] = l_split
                 levels.loc[4,feat[i]] = r_split
-                l_split = ' '.join(map(str, l_split))
-                r_split = ' '.join(map(str, r_split))
-            l_label = f'{feat_short[i]} {str(l_split)}'
-            r_label = f'{feat_short[i]} {str(r_split)}'
+                # l_split = ' '.join(map(str, l_split))
+                # r_split = ' '.join(map(str, r_split))
+            l_label = f'{feat_short[i]} [{" | ".join(map(str,l_split))}]'
+            r_label = f'{feat_short[i]} [{" | ".join(map(str,r_split))}]'
             labels[(i, l_node)] = l_label
             labels[(i, r_node)] = r_label
             labels = get_each(i=l_node, labels=labels, levels=levels)
@@ -236,7 +236,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
             a.loc[(a['pos'].isna()), 'depth_r'] = i
             a.loc[(a['pos'].isna()), 'pos'] = mean_pos.tolist()
             if i < -2 : # to avoid an infinite loop
-                print('Error in  get_depth while loop')
+                print('Error in line 239 radtree/__init__.py : get_depth() while loop')
                 break
         df_depths = a.sort_index()
         node_paths = p
@@ -245,7 +245,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
     def make_radial_plot(G,X,Y, clf, df_depths, node_paths, leaf_nodes,
                          draw_labels=None, bbox=None, node_size=None,
                          l_width=1, l_alpha=1, smooth_res=50, smooth_d=3, spring=True,
-                         smooth_edges=False, bg_color="#00000F",
+                         smooth_edges=False, edges_labels=None, bg_color="#00000F",
                          fig_res=72, save_img=True, img_res=72, png_transparent=True) :
         t = clf.tree_
         x = X.copy()
@@ -319,7 +319,10 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
         if np.char.isnumeric(cols.values.astype(str)).all() :
             cols = cols.astype(int)
             if sorted(cols) == list(range(min(cols), max(cols)+1)) :
-                str_feat = f'range({x.columns[0]}, {x.columns[-1]})'
+                str_feat = edges_labels
+                if edges_labels is None :
+                    str_feat = f'range({x.columns[0]}, {x.columns[-1]})'
+                    str_feat = ' '
         suptitle = plt.figtext(0.5, title_pos[1]*.88 , str_feat, color='w', horizontalalignment='center')
         file_name = './plots/nfeat{}_s{}_n{}_sp{}_sm{}_d{}_lw{}{}_dpi{}.png'.format(*file_name_parameters)
         if save_img :
@@ -412,7 +415,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
         feature_cols = feature_cols.tolist()
     if not isinstance(label_col , list) :
         label_col = [label_col]
-    x = data[feature_cols].sample(num_samples, random_state=random_seed)
+    x = data[feature_cols].sample(num_samples, random_state=random_state)
     y = data.loc[x.index,label_col]
     num_classes = int(y.max()[0] + 1)
     if cmap == 'pairs' :
@@ -422,22 +425,23 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
             cmap = ['#FF0000','#FF00FF','#0000FF','#00FFFF','#00FF00','#FFFF00']
         else :
             cmap = [
-                    '#880000','#FF0000',
-                    '#880088','#FF00FF',
-                    '#000088','#0000FF',
-                    '#008888','#00FFFF',
-                    '#008800','#00FF00',
-                    '#888800','#FFFF00',
-                    '#884400','#FF8800',
-                    '#880044','#FF0088',
-                    '#004488','#0088FF',
-                    '#440088','#8800FF',
-                    '#448800','#88FF00',
-                    '#008844','#00FF88',
-                    '#884488','#FF88FF',
-                    '#888844','#FFFF88',
-                    '#448888','#88FFFF',
+                    '#880000','#FF4444',
+                    '#880088','#FF44FF',
+                    '#000088','#4444FF',
+                    '#008888','#44FFFF',
+                    '#008800','#44FF44',
+                    '#888800','#FFFF44',
+                    '#884400','#FFCC44',
+                    '#880044','#FF44CC',
+                    '#004488','#44CCFF',
+                    '#440088','#CC44FF',
+                    '#448800','#CCFF44',
+                    '#008844','#44FFCC',
+                    '#884488','#FFCCFF',
+                    '#888844','#FFFFCC',
+                    '#448888','#CCFFFF',
                    ]
+# cmap = ['#880000','#FF0000','#880088','#FF00FF','#000088','#0000FF','#008888','#00FFFF','#008800','#00FF00','#888800','#FFFF00','#884400','#FF8800','#880044','#FF0088','#004488','#0088FF','#440088','#8800FF','#448800','#88FF00','#008844','#00FF88','#884488','#FF88FF','#888844','#FFFF88','#448888','#88FFFF',]
         cm = mpl.colors.ListedColormap(cmap,'labels_cmap',num_classes*2)
         cmap = [np.array(cm(i)[:3]) for i in range(num_classes*2)]
     elif isinstance(cmap, str) :
@@ -455,7 +459,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
                      draw_labels=draw_labels, bbox=bbox, node_size=node_size,
                      l_width=l_width, l_alpha=l_alpha,
                      spring=spring, smooth_edges=smooth_edges,
-                     smooth_d=smooth_d, smooth_res=smooth_res,
+                     smooth_d=smooth_d, smooth_res=smooth_res, edges_labels=edges_labels,
                      fig_res=72, save_img=save_img, img_res=img_res, png_transparent=png_transparent)
 
 
@@ -471,7 +475,7 @@ def quick_fitted_tree(X,Y, model_type=['GridSearch', 'FeatureSelection'], test_s
     model = dtree
 
     if 'FeatureSelection' in model_type :
-        dtree_rfe = feature_selection.RFECV(tree.DecisionTreeClassifier(), step = 1, scoring = 'accuracy', cv = cv_split)
+        dtree_rfe = feature_selection.RFECV(tree.DecisionTreeClassifier(random_state=random_state), step = 1, scoring = 'accuracy', cv = cv_split)
         dtree_rfe.fit(x, y)
         x = x[:,dtree_rfe.get_support()]
         if isinstance(test_split, (float)) :
@@ -486,7 +490,7 @@ def quick_fitted_tree(X,Y, model_type=['GridSearch', 'FeatureSelection'], test_s
                       #'min_samples_leaf': [1,5,10,.03,.05],
                       #'max_features': [None, 'auto'],
                      }
-        model = model_selection.GridSearchCV(tree.DecisionTreeClassifier(), param_grid=param_grid, scoring = 'accuracy', cv = cv_split)
+        model = model_selection.GridSearchCV(tree.DecisionTreeClassifier(random_state=random_state), param_grid=param_grid, scoring = 'accuracy', cv = cv_split)
 
     model.fit(x, y)
     if model_type != None :
@@ -499,7 +503,7 @@ def quick_fitted_tree(X,Y, model_type=['GridSearch', 'FeatureSelection'], test_s
     return model, sel_cols, splitted_data
 
 
-def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72) :
+def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72, random_state=None) :
     from sklearn.decomposition import PCA
     import matplotlib.pyplot as plt
     import numpy as np
@@ -515,7 +519,7 @@ def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=F
         plt.rcParams['font.family'] = 'sans-serif'
         plt.rcParams['font.size'] = 14
         plt.rcParams['figure.dpi'] = fig_res
-    pca = PCA(2)
+    pca = PCA(2, random_state=random_state)
     pca.fit(X, Y)
     embedings = pca.transform(X_valid)
     embedings = np.array(embedings)
@@ -529,7 +533,7 @@ def plot_pca(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=F
         plt.savefig(file_name, dpi=img_res, transparent=True)
     plt.show()
 
-def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72) :
+def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72, random_state=None) :
     from umap import UMAP
     import matplotlib.pyplot as plt
     import numpy as np
@@ -545,7 +549,7 @@ def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=
         plt.rcParams['font.family'] = 'sans-serif'
         plt.rcParams['font.size'] = 14
         plt.rcParams['figure.dpi'] = fig_res
-    umap = UMAP(25)
+    umap = UMAP(25, random_state=random_state)
     umap.fit(X, Y.ravel())
     embedings = umap.transform(X_valid)
     embedings = np.array(embedings)
@@ -559,7 +563,7 @@ def plot_umap(X,Y, validation_data=None, style='starplot', p_size=3.5, save_img=
         plt.savefig(file_name, dpi=img_res, transparent=True)
     plt.show()
 
-def plot_tsne(X,Y, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72) :
+def plot_tsne(X,Y, style='starplot', p_size=3.5, save_img=False, img_res=300, fig_res=72, random_state=None) :
         from sklearn.manifold import TSNE
         import matplotlib.pyplot as plt
         import numpy as np
@@ -572,7 +576,7 @@ def plot_tsne(X,Y, style='starplot', p_size=3.5, save_img=False, img_res=300, fi
             plt.rcParams['font.family'] = 'sans-serif'
             plt.rcParams['font.size'] = 14
             plt.rcParams['figure.dpi'] = fig_res
-        tsne = TSNE(2, random_state=42, perplexity=40)
+        tsne = TSNE(2, random_state=random_state, perplexity=40)
         embedings = tsne.fit_transform(X)
         embedings = np.array(embedings)
         size = p_size

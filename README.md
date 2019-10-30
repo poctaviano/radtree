@@ -18,7 +18,7 @@ I would like to thanks <a href='https://stackoverflow.com/users/1429402/fnord'>F
 
 ## Beta Version
 
-This package is in beta version. Some functionalities need to be improved.
+This is a beta version. Some functionalities need to be improved.
 
 Since it calculates all the possible paths between the points in the dataset, the processing time will increase drastically as the number of samples increase.
 
@@ -41,24 +41,25 @@ Please check the [/notebooks](./notebooks/) folder to view some examples.
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import datasets
+random_state = 42
 
 import radtree
 
 X, y = datasets.load_iris(True)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4, random_state=42)
-dtree = DecisionTreeClassifier(random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4, random_state=random_state)
+dtree = DecisionTreeClassifier(random_state=random_state)
 dtree.fit(X_train, y_train)
 
 radtree.plot_radial(dtree, X=X_test,Y=y_test,
                     smooth_d=8, l_alpha=.2, l_width=1,
-                    random_seed=42,
+                    random_state=random_state,
                    )
 
 ```
 
 To automatically save the plot as a PNG file, you can use `save_img=True`.
 
-The file will be saved in `/plots/` folder.
+The file will be saved in `/plots` folder.
 
 <table width="100%">
   <tr>
