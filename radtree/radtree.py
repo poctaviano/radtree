@@ -122,7 +122,7 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
                     label = None
                 v = t.value[i_l,0]
                 c = mpl.colors.to_hex(((v/v.sum()) * label_hex_colors[range(0,num_classes*2,2)].T).T.sum(axis=0))
-                G.add_edge(i, i_l, weight=G.node[i_l]['samples'], color=c, label=label)
+                G.add_edge(i, i_l, weight=G.nodes[i_l]['samples'], color=c, label=label)
             if i_r != -1 :
                 g = ginis[i_r].astype(int)
                 label = labels[(i,i_r)]
@@ -130,10 +130,10 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
                     label = None
                 v = t.value[i_r,0]
                 c = mpl.colors.to_hex(((v/v.sum()) * label_hex_colors[range(0,num_classes*2,2)].T).T.sum(axis=0))
-                G.add_edge(i, i_r, weight=G.node[i_l]['samples'], color=c, label=label)
+                G.add_edge(i, i_r, weight=G.nodes[i_l]['samples'], color=c, label=label)
             v = t.value[i,0]
             c = mpl.colors.to_hex(((v/v.sum()) * label_hex_colors[range(0,num_classes*2,2)].T).T.sum(axis=0))
-            G.node[i]['color'] = c
+            G.nodes[i]['color'] = c
         p = pd.DataFrame([np.argwhere(path_)[-1][0] for path_ in clf.decision_path(x).toarray()])
         p.index = x.index
         p.columns = ['parent_n']
@@ -150,10 +150,10 @@ def plot_radial(clf, X=None,Y=None, data=None, feature_cols=None, label_col=None
             loss = np.abs(loss)
             c = mpl.colors.to_hex(label_hex_colors[y_labl*2 + bool(loss)])
             G.add_edge(parent_n, node_num, weight=1, color=c)
-            G.node[node_num]['color'] = c
-            G.node[node_num]['loss'] = y_labl-y_pred
-            G.node[node_num]['pos'] =  (1j)**(p.loc[node_num,'pos']*4)
-            G.node[node_num]['depth'] = t.max_depth+1
+            G.nodes[node_num]['color'] = c
+            G.nodes[node_num]['loss'] = y_labl-y_pred
+            G.nodes[node_num]['pos'] =  (1j)**(p.loc[node_num,'pos']*4)
+            G.nodes[node_num]['depth'] = t.max_depth+1
         return G, p, x.index
 
     def get_edges_labels(X, Y, clf, feature_cols, levels_0=None, feat_short=None) :
