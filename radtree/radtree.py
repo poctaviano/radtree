@@ -1,8 +1,9 @@
 import os
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+
 import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from matplotlib.collections import LineCollection
 from matplotlib.colors import LinearSegmentedColormap
 
@@ -686,7 +687,7 @@ def quick_fitted_tree(
     test_split=None,
     random_state=None,
 ):
-    from sklearn import tree, model_selection, feature_selection
+    from sklearn import feature_selection, model_selection, tree
 
     splitted_data = None
     sel_cols = None
