@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "radtree"
+version = "0.1.0"
+description = "Radial visualization helpers for scikit-learn decision trees"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Pedro Octaviano" }]
+license = "BSD-3-Clause"
+license-files = ["LICENSE", "LICENSE-networkx.txt"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+  "matplotlib>=3.7",
+  "networkx>=2.8",
+  "numpy>=1.24",
+  "pandas>=1.5",
+  "scikit-learn>=1.2",
+  "scipy>=1.10",
+  "tqdm>=4.65",
+]
+
+[project.optional-dependencies]
+umap = ["umap-learn>=0.5"]
+
+[project.urls]
+Homepage = "https://github.com/poctaviano/radtree"
+Repository = "https://github.com/poctaviano/radtree"
+Issues = "https://github.com/poctaviano/radtree/issues"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["radtree*"]
+
