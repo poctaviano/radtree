@@ -790,7 +790,7 @@ def plot_pca(
             cmap=cmap,
             s=5 * point**size,
             alpha=1 / (point**size),
-            edgecolors="",
+            edgecolors="none",
         )
     file_name = "./plots/s" + str(int(size)) + "_pca.png"
     if save_img:
@@ -835,7 +835,7 @@ def plot_umap(
             cmap=cmap,
             s=5 * point**size,
             alpha=1 / (point**size),
-            edgecolors="",
+            edgecolors="none",
         )
     file_name = "./plots/s" + str(int(size)) + "_umap.png"
     if save_img:
@@ -875,7 +875,7 @@ def plot_tsne(
             cmap=cmap,
             s=5 * point**size,
             alpha=1 / (point**size),
-            edgecolors="",
+            edgecolors="none",
         )
     file_name = "./plots/s" + str(int(size)) + "_tsne.png"
     if save_img:
