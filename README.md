@@ -35,11 +35,6 @@ python -m pip install -e .
 
 If a PyPI release is not available yet, use editable install or GitHub source install.
 
-### Troubleshooting (macOS/Homebrew Python)
-
-If `pip` shows `externally-managed-environment` (PEP 668), install inside a virtual environment as shown above.
-Avoid installing into the system-managed interpreter.
-
 ## Quickstart (<30 seconds)
 
 ```python
