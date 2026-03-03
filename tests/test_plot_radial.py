@@ -119,3 +119,20 @@ def test_quick_fitted_tree_feature_selection_supports_pandas_inputs(iris_data):
     assert support_mask is not None
     assert len(support_mask) == X_df.shape[1]
     assert isinstance(splitted, tuple)
+
+
+def test_projection_helpers_run_without_matplotlib_edgecolor_errors(iris_data):
+    X, y = iris_data
+    y_column = y.reshape(-1, 1)
+
+    radtree.plot_pca(
+        X,
+        y_column,
+        validation_data=(X, y_column),
+        random_state=42,
+    )
+    radtree.plot_tsne(
+        X[:50],
+        y_column[:50],
+        random_state=42,
+    )
