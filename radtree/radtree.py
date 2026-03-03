@@ -715,10 +715,17 @@ def quick_fitted_tree(
             cv=cv_split,
         )
         dtree_rfe.fit(x, y)
-        x = x[:, dtree_rfe.get_support()]
+        support_mask = dtree_rfe.get_support()
+        if isinstance(x, pd.DataFrame):
+            x = x.loc[:, support_mask]
+        else:
+            x = x[:, support_mask]
         if isinstance(test_split, (float)):
-            x_test = x_test[:, dtree_rfe.get_support()]
-        sel_cols = dtree_rfe.get_support()
+            if isinstance(x_test, pd.DataFrame):
+                x_test = x_test.loc[:, support_mask]
+            else:
+                x_test = x_test[:, support_mask]
+        sel_cols = support_mask
     if "GridSearch" in model_type:
         param_grid = {
             "criterion": ["gini", "entropy"],

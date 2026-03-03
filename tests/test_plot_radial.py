@@ -104,3 +104,18 @@ def test_plot_radial_sampling_is_deterministic_for_same_random_state(
     assert calls[0][0] == 25
     assert calls[0][1] == 7
     assert calls[0][2] == calls[1][2]
+
+
+def test_quick_fitted_tree_feature_selection_supports_pandas_inputs(iris_data):
+    X, y = iris_data
+    X_df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
+    y_series = pd.Series(y, name="target")
+
+    model, support_mask, splitted = radtree.quick_fitted_tree(
+        X_df, y_series, model_type=["FeatureSelection"], random_state=42
+    )
+
+    assert model is not None
+    assert support_mask is not None
+    assert len(support_mask) == X_df.shape[1]
+    assert isinstance(splitted, tuple)
