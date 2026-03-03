@@ -22,8 +22,7 @@ This project depends on third-party open-source software.
 
 ## Included third-party license text
 
-- NetworkX BSD-3-Clause text is included in this repository at:
-  - `THIRD_PARTY_NOTICES/networkx-bsd-3-clause.txt`
+No third-party package license text is vendored in this repository. Refer to the upstream license links above.
 
 ## Compatibility note
 
