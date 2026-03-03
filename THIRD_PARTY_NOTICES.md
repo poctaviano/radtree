@@ -1,6 +1,8 @@
 # Third-Party Notices
 
-This project depends on third-party open-source software.
+`radtree` depends on third-party open-source packages.
+
+No third-party source code is vendored in this repository.
 
 ## Direct runtime dependencies
 
@@ -20,10 +22,4 @@ This project depends on third-party open-source software.
 | --- | --- | --- |
 | `umap-learn` | BSD-3-Clause | https://github.com/lmcinnes/umap/blob/master/LICENSE.txt |
 
-## Included third-party license text
-
-No third-party package license text is vendored in this repository. Refer to the upstream license links above.
-
-## Compatibility note
-
-The direct dependency licenses above are permissive or weak-copyleft and are generally compatible with this project's BSD-3-Clause licensing model when used as dependencies. This is an engineering compliance summary, not legal advice.
+Refer to upstream projects for the latest license texts and notices.
