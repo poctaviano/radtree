@@ -190,9 +190,25 @@ def plot_radial(
         )
         return data_df, feature_cols_list, label_col_list
 
-    def get_num_classes(y_df):
-        y_values = np.asarray(y_df.iloc[:, 0])
-        return int(np.nanmax(y_values) + 1)
+    def get_num_classes(clf, y_df):
+        if hasattr(clf, "classes_"):
+            return int(len(np.asarray(clf.classes_)))
+        y_values = pd.Series(np.asarray(y_df.iloc[:, 0]))
+        return int(y_values.nunique())
+
+    def encode_labels(y_df, clf):
+        y_values = pd.Series(np.asarray(y_df.iloc[:, 0]))
+        if hasattr(clf, "classes_"):
+            classes = pd.Index(np.asarray(clf.classes_))
+        else:
+            classes = pd.Index(pd.unique(y_values))
+        y_codes = pd.Categorical(y_values, categories=classes).codes
+        if (y_codes < 0).any():
+            unknown = y_values[y_codes < 0].drop_duplicates().tolist()
+            raise ValueError(
+                "Y contains labels not present in clf.classes_: {}".format(unknown)
+            )
+        return y_codes.astype(int)
 
     def make_graph(
         X,
@@ -213,9 +229,11 @@ def plot_radial(
                 x[cat_cols].astype("category").apply(lambda col: col.cat.codes)
             )
         y = Y.copy()
-        num_classes = get_num_classes(y)
+        num_classes = get_num_classes(clf, y)
+        y_encoded = pd.Series(encode_labels(y, clf), index=y.index)
         x.index = range(t.node_count, t.node_count + len(x.index))
         y.index = range(t.node_count, t.node_count + len(x.index))
+        y_encoded.index = y.index
         G = nx.Graph()
         labels = get_edges_labels(
             X, Y, clf, feature_cols, levels_0=levels_0, feat_short=feat_short
@@ -230,7 +248,8 @@ def plot_radial(
                 value=t.value[i],
             )
         for i, f in x.iterrows():
-            G.add_node(i, node_size=leaf_node_size, **f.to_dict())
+            G.add_node(i, node_size=leaf_node_size)
+            G.nodes[i].update(f.to_dict())
         for i in range(t.node_count):
             i_l = t.children_left[i]
             i_r = t.children_right[i]
@@ -268,7 +287,7 @@ def plot_radial(
         )
         p.index = x.index
         p.columns = ["parent_n"]
-        p["loss"] = y.values[:, 0] - t.value[p.values[:, 0]].argmax(axis=2)[:, 0]
+        p["loss"] = y_encoded.values - t.value[p.values[:, 0]].argmax(axis=2)[:, 0]
         p = p.sort_values(by=["parent_n", "loss"])
         p["pos"] = np.linspace(0, 1, len(p), endpoint=False)
         p = p.sort_index()
@@ -276,7 +295,7 @@ def plot_radial(
             node_num = x.index[j]
             parent_n = np.argwhere(n)[-1][0]
             y_pred = t.value[parent_n].argmax()
-            y_labl = int(y.iloc[j, 0])
+            y_labl = int(y_encoded.iloc[j])
             loss = y_labl - y_pred
             loss = np.abs(loss)
             c = mpl.colors.to_hex(label_hex_colors[y_labl * 2 + bool(loss)])
@@ -302,7 +321,7 @@ def plot_radial(
         levels.loc[3] = levels.loc[0]
         levels.loc[4] = levels.loc[0]
         if feat_short is None:
-            feat_short = [s.lower()[:5] for s in feature_cols]
+            feat_short = [str(s).lower()[:5] for s in feature_cols]
         feat = t.feature
         feat_short = np.array(feat_short)[feat]
         feat = np.array(feature_cols)[feat]
@@ -494,7 +513,7 @@ def plot_radial(
         )
         title_pos = title.get_position()
         cols = x.columns
-        str_feat = "   ".join(x.columns.tolist())
+        str_feat = "   ".join(map(str, x.columns.tolist()))
         col_strings = [str(c) for c in cols.tolist()]
         if all(value.isnumeric() for value in col_strings):
             cols = cols.astype(int)
@@ -594,7 +613,7 @@ def plot_radial(
     else:
         x = data[feature_cols].sample(sample_size, random_state=random_state)
     y = data.loc[x.index, label_col]
-    num_classes = get_num_classes(y)
+    num_classes = get_num_classes(clf, y)
     if cmap == "pairs":
         if num_classes <= 2:
             cmap = ["#FF0000", "#FFFF00", "#0000FF", "#00FFFF"]
