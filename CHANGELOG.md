@@ -7,9 +7,18 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Added
+- Release workflow for tag-based PyPI publishing (`.github/workflows/release.yml`).
+- Direct dependency license matrix in `THIRD_PARTY_NOTICES.md`.
+
 ### Changed
 - Moved third-party NetworkX license text to `THIRD_PARTY_NOTICES/networkx-bsd-3-clause.txt` to avoid GitHub misclassifying it as a project license.
 - Ignored generated `plots/` artifacts in `.gitignore`.
+- Raised minimum dependency versions to current maintained baselines.
+- Clarified README PyPI installation section as publish-dependent.
+
+### Fixed
+- `quick_fitted_tree` feature selection path now supports pandas DataFrame inputs.
 
 ## [0.1.0] - 2026-03-03
 

@@ -18,7 +18,7 @@ python -m pip install -U pip
 python -m pip install -e .
 ```
 
-### PyPI install
+### PyPI install (when published)
 
 ```bash
 pip install radtree
