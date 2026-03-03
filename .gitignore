@@ -23,3 +23,6 @@ venv/
 
 # Local audit artifacts
 docs/AUDIT_REPORT_LANGFUSE.md
+
+# Internal planning artifacts
+specs/public-readiness/
