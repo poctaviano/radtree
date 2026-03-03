@@ -106,6 +106,36 @@ def test_plot_radial_sampling_is_deterministic_for_same_random_state(
     assert calls[0][2] == calls[1][2]
 
 
+def test_plot_radial_supports_string_labels(iris_data):
+    X, y = iris_data
+    X_df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
+    y_series = pd.Series([f"class_{value}" for value in y], name="target")
+    clf = DecisionTreeClassifier(random_state=42)
+    clf.fit(X_df, y_series)
+
+    fig, ax = radtree.plot_radial(
+        clf, X=X_df, Y=y_series, num_samples=30, random_state=42
+    )
+
+    assert fig is not None
+    assert ax is not None
+
+
+def test_plot_radial_supports_integer_feature_columns_with_string_labels(iris_data):
+    X, y = iris_data
+    X_df = pd.DataFrame(X)
+    y_series = pd.Series([f"class_{value}" for value in y], name="target")
+    clf = DecisionTreeClassifier(random_state=42)
+    clf.fit(X_df, y_series)
+
+    fig, ax = radtree.plot_radial(
+        clf, X=X_df, Y=y_series, num_samples=30, random_state=42
+    )
+
+    assert fig is not None
+    assert ax is not None
+
+
 def test_quick_fitted_tree_feature_selection_supports_pandas_inputs(iris_data):
     X, y = iris_data
     X_df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
