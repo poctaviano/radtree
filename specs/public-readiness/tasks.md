@@ -1,14 +1,14 @@
 # Public Readiness Tasks
 
 ## P0 (Required)
-- [ ] OSS hygiene: align main license metadata and third-party notices.
-- [ ] Packaging modernization: add `pyproject.toml`, correct dependencies, define supported Python versions.
-- [ ] Runtime reliability fixes in `plot_radial` and `quick_fitted_tree` while keeping API compatibility.
-- [ ] Add pytest suite for smoke and regression coverage.
-- [ ] Add CI workflow for lint, format, tests, and build.
-- [ ] Add pre-commit configuration.
-- [ ] Rewrite README for quickstart/API/performance/contribution/license clarity.
-- [ ] Add `CONTRIBUTING.md` and `CHANGELOG.md`.
+- [x] OSS hygiene: align main license metadata and third-party notices.
+- [x] Packaging modernization: add `pyproject.toml`, correct dependencies, define supported Python versions.
+- [x] Runtime reliability fixes in `plot_radial` and `quick_fitted_tree` while keeping API compatibility.
+- [x] Add pytest suite for smoke and regression coverage.
+- [x] Add CI workflow for lint, format, tests, and build.
+- [x] Add pre-commit configuration.
+- [x] Rewrite README for quickstart/API/performance/contribution/license clarity.
+- [x] Add `CONTRIBUTING.md` and `CHANGELOG.md`.
 
 ## P1 (Strong Improvements)
 - [ ] Add type hints and stronger public docstrings.

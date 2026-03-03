@@ -1,69 +1,139 @@
-# Radial Plot for sklearn Decision Trees
+# radtree
 
-<table width="100%">
-  <tr>
-    <td width="33%"><img src="./assets/iris.png?raw=true" width="100%"></td>
-    <td><img src="./assets/bcancer.png?raw=true" width="100%"></td>
-    <td width="33%"><img src="./assets/titanic3.png?raw=true" width="100%"></td>
-  </tr>
-</table>
+[![CI](https://github.com/poctaviano/radtree/actions/workflows/ci.yml/badge.svg)](https://github.com/poctaviano/radtree/actions/workflows/ci.yml)
+[![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](./LICENSE)
 
-## What is it?
+`radtree` visualizes scikit-learn decision tree predictions as a radial graph. It is designed for quick exploratory inspection of class boundaries and prediction consistency on a sampled evaluation set.
 
-`radtree` is a tool for visualizing Decision Trees Classifiers as a radial plot.
-
-It uses networkx to create the tree structure and matplotlib to plot.
-
-I would like to thanks <a href='https://stackoverflow.com/users/1429402/fnord'>Fnord</a> for tem <a href='https://stackoverflow.com/questions/34803197/fast-b-spline-algorithm-with-numpy-scipy'>b-spline algorithm</a>.
-
-## Beta Version
-
-This is a beta version. Some functionalities need to be improved.
-
-Since it calculates all the possible paths between the points in the dataset, the processing time will increase drastically as the number of samples increase.
-
-By default, it's capped at 100 random samples maximum. To use all the data given, please use `num_samples=None`.
+![Iris radial plot](./assets/iris.png)
 
 ## Installation
 
-- Install `radtree` with pip :
+### Local editable install (recommended for development)
 
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+python -m pip install -e .
 ```
-pip install git+https://github.com/poctaviano/radtree
+
+### PyPI install
+
+```bash
+pip install radtree
 ```
 
-## Examples
+If a PyPI release is not available yet, use editable install or GitHub source install.
 
-Please check the [/notebooks](./notebooks/) folder to view some examples.
+## Quickstart (<30 seconds)
 
 ```python
-%matplotlib inline
+from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn import datasets
-random_state = 42
 
 import radtree
 
-X, y = datasets.load_iris(True)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.4, random_state=random_state)
-dtree = DecisionTreeClassifier(random_state=random_state)
-dtree.fit(X_train, y_train)
+random_state = 42
+X, y = datasets.load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.4, random_state=random_state
+)
 
-radtree.plot_radial(dtree, X=X_test,Y=y_test,
-                    smooth_d=8, l_alpha=.2, l_width=1,
-                    random_state=random_state,
-                   )
+clf = DecisionTreeClassifier(random_state=random_state)
+clf.fit(X_train, y_train)
 
+fig, ax = radtree.plot_radial(
+    clf,
+    X=X_test,
+    Y=y_test,
+    smooth_d=8,
+    l_alpha=0.2,
+    l_width=1,
+    random_state=random_state,
+)
 ```
 
-To automatically save the plot as a PNG file, you can use `save_img=True`.
+## API
 
-The file will be saved in `/plots` folder.
+### `plot_radial`
 
-<table width="100%">
-  <tr>
-    <td><img src="./assets/iris2.png?raw=true" width="100%"></td>
-  </tr>
-</table>
-<!-- <div bgcolor="#000000"><img src="./assets/iris2.png?raw=true" width="90%"></div> -->
+```python
+plot_radial(
+    clf,
+    X=None,
+    Y=None,
+    data=None,
+    feature_cols=None,
+    label_col=None,
+    num_samples=100,
+    levels=None,
+    edges_labels=None,
+    draw_labels=None,
+    style="radplot",
+    bbox="dark",
+    cmap="pairs",
+    tree_node_size=50,
+    leaf_node_size=50,
+    node_size=50,
+    l_width=1,
+    l_alpha=1,
+    fig_res=72,
+    save_img=False,
+    img_res=300,
+    png_transparent=True,
+    spring=False,
+    smooth_edges=False,
+    smooth_d=None,
+    smooth_res=50,
+    random_state=None,
+)
+```
+
+Core parameters:
+- `clf`: fitted `DecisionTreeClassifier`.
+- `X`/`Y` or `data`: input records and labels.
+- `num_samples`: number of rows to render. Use `None` to use all rows.
+- `random_state`: deterministic sampling seed.
+- `smooth_d`: enables spline smoothing when set.
+- `save_img`: saves output PNG to `./plots/`.
+
+Return value:
+- `(fig, ax)` matplotlib figure and axes.
+
+Additional helpers:
+- `quick_fitted_tree`
+- `plot_pca`
+- `plot_tsne`
+- `plot_umap` (requires optional dependency `umap-learn`)
+
+## Performance and limits
+
+`plot_radial` can become expensive on larger datasets, especially with smoothing enabled.
+
+Practical guidance:
+- Start with `num_samples=50` or `100`.
+- Increase to `200+` only when needed.
+- Keep `smooth_d=None` for faster previews.
+- Use `random_state` for repeatable comparisons.
+- For full-dataset runs (`num_samples=None`), prefer smaller evaluation subsets if rendering gets slow.
+
+## Examples
+
+Notebooks and example datasets are available in [`notebooks/`](./notebooks/).
+
+![Digits radial plot](./assets/digits.png)
+![Titanic radial plot](./assets/titanic3.png)
+
+## Third-party notices
+
+This repository includes third-party attribution details in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), including the NetworkX license text in [`LICENSE-networkx.txt`](./LICENSE-networkx.txt).
+
+## Contributing
+
+Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) for local setup, quality checks, and pull request expectations.
+
+## License
+
+Main project license: BSD 3-Clause ([`LICENSE`](./LICENSE)).
