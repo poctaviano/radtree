@@ -7,6 +7,10 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Changed
+- Moved third-party NetworkX license text to `THIRD_PARTY_NOTICES/networkx-bsd-3-clause.txt` to avoid GitHub misclassifying it as a project license.
+- Ignored generated `plots/` artifacts in `.gitignore`.
+
 ## [0.1.0] - 2026-03-03
 
 ### Added
