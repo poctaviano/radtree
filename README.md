@@ -1,11 +1,16 @@
 # radtree
 
 [![CI](https://github.com/poctaviano/radtree/actions/workflows/ci.yml/badge.svg)](https://github.com/poctaviano/radtree/actions/workflows/ci.yml)
-[![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](./LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 
 `radtree` visualizes scikit-learn decision tree predictions as a radial graph. It is designed for quick exploratory inspection of class boundaries and prediction consistency on a sampled evaluation set.
 
 ![Iris radial plot](./assets/iris.png)
+
+## Status
+
+This project is maintained for exploratory decision-tree visualization workflows.
+Core public APIs (`plot_radial`, `quick_fitted_tree`, and package imports) are kept stable for notebook and script usage.
 
 ## Installation
 
@@ -110,10 +115,11 @@ Additional helpers:
 
 ## Performance and limits
 
-`plot_radial` can become expensive on larger datasets, especially with smoothing enabled.
+`plot_radial` uses `num_samples=100` by default as a safe rendering baseline.
+Runtime grows with sample size, and grows faster when smoothing is enabled.
 
 Practical guidance:
-- Start with `num_samples=50` or `100`.
+- Start with the default `num_samples=100`.
 - Increase to `200+` only when needed.
 - Keep `smooth_d=None` for faster previews.
 - Use `random_state` for repeatable comparisons.
@@ -128,7 +134,7 @@ Notebooks and example datasets are available in [`notebooks/`](./notebooks/).
 
 ## Third-party notices
 
-This repository includes third-party attribution details in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
+Third-party dependency notices are listed in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
 
 ## Contributing
 
@@ -136,4 +142,4 @@ Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md) for local setup, quality chec
 
 ## License
 
-Main project license: BSD 3-Clause ([`LICENSE`](./LICENSE)).
+MIT License ([`LICENSE`](./LICENSE)).
