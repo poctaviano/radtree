@@ -12,7 +12,7 @@ and this project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.ht
 - Direct dependency license matrix in `THIRD_PARTY_NOTICES.md`.
 
 ### Changed
-- Moved third-party NetworkX license text to `THIRD_PARTY_NOTICES/networkx-bsd-3-clause.txt` to avoid GitHub misclassifying it as a project license.
+- Removed vendored third-party license text file and kept upstream links in `THIRD_PARTY_NOTICES.md` to avoid GitHub misclassifying project licenses.
 - Ignored generated `plots/` artifacts in `.gitignore`.
 - Raised minimum dependency versions to current maintained baselines.
 - Clarified README PyPI installation section as publish-dependent.
