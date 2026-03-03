@@ -14,22 +14,31 @@ Core public APIs (`plot_radial`, `quick_fitted_tree`, and package imports) are k
 
 ## Installation
 
-### Local editable install (recommended for development)
+### PyPI install (recommended)
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+python -m pip install radtree
+python -c "import radtree; print(radtree.__all__)"
+```
+
+### Local editable install (development)
+
+```bash
+python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 python -m pip install -e .
 ```
 
-### PyPI install (when published)
-
-```bash
-pip install radtree
-```
-
 If a PyPI release is not available yet, use editable install or GitHub source install.
+
+### Troubleshooting (macOS/Homebrew Python)
+
+If `pip` shows `externally-managed-environment` (PEP 668), install inside a virtual environment as shown above.
+Avoid installing into the system-managed interpreter.
 
 ## Quickstart (<30 seconds)
 

@@ -5,7 +5,7 @@ Thanks for your interest in improving `radtree`.
 ## Development setup
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -U pip
 python -m pip install -e '.[dev]'
