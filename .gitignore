@@ -20,6 +20,7 @@ venv/
 
 # OS/editor
 .DS_Store
+.vscode/
 
 # Local audit artifacts
 docs/AUDIT_REPORT_LANGFUSE.md
