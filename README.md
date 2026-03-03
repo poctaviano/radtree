@@ -128,7 +128,7 @@ Notebooks and example datasets are available in [`notebooks/`](./notebooks/).
 
 ## Third-party notices
 
-This repository includes third-party attribution details in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), including the NetworkX license text in [`LICENSE-networkx.txt`](./LICENSE-networkx.txt).
+This repository includes third-party attribution details in [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md), including the NetworkX license text in [`THIRD_PARTY_NOTICES/networkx-bsd-3-clause.txt`](./THIRD_PARTY_NOTICES/networkx-bsd-3-clause.txt).
 
 ## Contributing
 

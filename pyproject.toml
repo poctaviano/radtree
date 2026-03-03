@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Pedro Octaviano" }]
 license = "BSD-3-Clause"
-license-files = ["LICENSE", "LICENSE-networkx.txt"]
+license-files = ["LICENSE"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
